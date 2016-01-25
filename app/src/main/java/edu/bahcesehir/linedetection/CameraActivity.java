@@ -35,6 +35,8 @@ implements CvCameraViewListener2 {
     private boolean isPreviewMode;
 
     private LineDetection mLineDetection;
+    private EdgeDetection mEdgeDetection;
+
     private Mat mBgr;
 
 
@@ -49,6 +51,7 @@ implements CvCameraViewListener2 {
                             mCameraView.enableView();
                             //mCameraView.enableFpsMeter();
                             mLineDetection = new LineDetection();
+                            mEdgeDetection = new EdgeDetection();
                             mBgr = new Mat();
                             break;
                         default:
@@ -164,9 +167,6 @@ implements CvCameraViewListener2 {
         {
             return null;
         }
-
-        //mLineDetection.Detect(rgba);
-
         return rgba;
     }
 
@@ -178,7 +178,9 @@ implements CvCameraViewListener2 {
     }
 
     private void previewImage(){
-        mLineDetection.Detect(mBgr);
+        //mLineDetection.Detect(mBgr);
+
+        mEdgeDetection.ApplyCanny(mBgr);
 
         Bitmap bmp = Bitmap.createBitmap(mBgr.cols(), mBgr.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mBgr, bmp);
